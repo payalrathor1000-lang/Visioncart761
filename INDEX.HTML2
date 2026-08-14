@@ -1,0 +1,4080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>VisionCart - Eyewear Store</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+    color:#222;
+}
+
+button{
+    font-family:inherit;
+}
+
+button:active{
+    transform:scale(.98);
+}
+header{
+    background:#111;
+    color:#fff;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 2px 12px rgba(0,0,0,.25);
+}
+
+.topbar{
+    min-height:72px;
+    padding:12px 5%;
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.logo{
+    font-size:29px;
+    font-weight:800;
+    white-space:nowrap;
+    color:#fff;
+}
+
+.logo span{
+    color:#d9a400;
+}
+
+.search-box{
+    flex:1;
+    height:45px;
+    display:flex;
+    background:#fff;
+    border-radius:5px;
+    overflow:hidden;
+}
+
+.search-box input{
+    flex:1;
+    border:0;
+    outline:0;
+    padding:0 15px;
+    font-size:15px;
+    color:#222;
+}
+
+.search-box button{
+    width:55px;
+    border:0;
+    background:#d9a400;
+    color:#111;
+    cursor:pointer;
+    font-size:19px;
+}
+
+.header-actions{
+    display:flex;
+    gap:18px;
+    align-items:center;
+}
+
+.header-actions button{
+    background:transparent;
+    border:0;
+    color:#fff;
+    cursor:pointer;
+    font-size:14px;
+    white-space:nowrap;
+}
+
+.header-actions button:hover{
+    color:#e5b400;
+}
+.categories{
+    background:#fff;
+    padding:13px 5%;
+    display:flex;
+    gap:30px;
+    overflow-x:auto;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+
+.categories::-webkit-scrollbar{
+    height:4px;
+}
+
+.categories button{
+    border:0;
+    background:transparent;
+    white-space:nowrap;
+    cursor:pointer;
+    font-weight:bold;
+    color:#333;
+    padding:5px;
+}
+
+.categories button:hover{
+    color:#b18100;
+}
+.hero{
+    margin:25px 5%;
+    border-radius:16px;
+    padding:50px;
+    min-height:310px;
+    color:#fff;
+
+    background:
+        radial-gradient(circle at 90% 30%,rgba(255,255,255,.15),transparent 30%),
+        linear-gradient(125deg,#111,#3d300b,#b88600);
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    overflow:hidden;
+}
+
+.hero-text{
+    max-width:650px;
+}
+
+.hero h1{
+    font-size:43px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:18px;
+    line-height:1.6;
+    color:#eee;
+    margin-bottom:25px;
+}
+
+.hero button{
+    background:#e5b400;
+    border:0;
+    color:#111;
+    padding:14px 25px;
+    border-radius:6px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.hero-glasses{
+    font-size:130px;
+    filter:drop-shadow(0 10px 10px rgba(0,0,0,.4));
+}
+.notice{
+    margin:20px 5%;
+    padding:17px;
+    background:#fff8df;
+    border-left:5px solid #d9a400;
+    border-radius:8px;
+}
+
+.notice h3{
+    margin-bottom:7px;
+}
+
+.notice p{
+    line-height:1.5;
+    color:#555;
+}
+
+.section{
+    margin:30px 5%;
+}
+
+.features{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.feature{
+    background:#fff;
+    padding:23px;
+    border-radius:10px;
+    text-align:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.feature-icon{
+    font-size:34px;
+    margin-bottom:10px;
+}
+
+.feature h3{
+    margin-bottom:7px;
+}
+
+.feature p{
+    color:#777;
+    font-size:14px;
+}
+.section-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.section-title h2{
+    font-size:26px;
+}
+
+#resultCount{
+    color:#777;
+    font-size:14px;
+}
+.products{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fill,minmax(220px,1fr));
+    gap:20px;
+}
+
+.product{
+    background:#fff;
+    border-radius:10px;
+    padding:14px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+    transition:.2s;
+    cursor:pointer;
+}
+
+.product:hover{
+    transform:translateY(-4px);
+    box-shadow:0 8px 22px rgba(0,0,0,.13);
+}
+
+.product-img{
+    height:190px;
+    background:#f7f3e7;
+    border-radius:8px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:14px;
+    overflow:hidden;
+}
+
+.glasses{
+    width:135px;
+    height:62px;
+    position:relative;
+}
+
+.glass-lens,
+.glass-right{
+    position:absolute;
+    top:12px;
+    width:52px;
+    height:40px;
+    border:5px solid #222;
+    border-radius:10px 10px 18px 18px;
+}
+
+.glass-lens{
+    left:5px;
+}
+
+.glass-right{
+    right:5px;
+}
+
+.glass-bridge{
+    position:absolute;
+    width:25px;
+    height:5px;
+    background:#222;
+    left:55px;
+    top:29px;
+    border-radius:5px;
+}
+
+.glass-arm-left,
+.glass-arm-right{
+    position:absolute;
+    width:35px;
+    height:5px;
+    background:#222;
+    top:16px;
+}
+
+.glass-arm-left{
+    left:-27px;
+    transform:rotate(-8deg);
+}
+
+.glass-arm-right{
+    right:-27px;
+    transform:rotate(8deg);
+}
+
+.black .glass-lens,
+.black .glass-right{
+    border-color:#111;
+}
+
+.black .glass-bridge,
+.black .glass-arm-left,
+.black .glass-arm-right{
+    background:#111;
+}
+
+.gold .glass-lens,
+.gold .glass-right{
+    border-color:#c49500;
+}
+
+.gold .glass-bridge,
+.gold .glass-arm-left,
+.gold .glass-arm-right{
+    background:#c49500;
+}
+
+.brown .glass-lens,
+.brown .glass-right{
+    border-color:#704214;
+}
+
+.brown .glass-bridge,
+.brown .glass-arm-left,
+.brown .glass-arm-right{
+    background:#704214;
+}
+
+.silver .glass-lens,
+.silver .glass-right{
+    border-color:#777;
+}
+
+.silver .glass-bridge,
+.silver .glass-arm-left,
+.silver .glass-arm-right{
+    background:#777;
+}
+
+.blue .glass-lens,
+.blue .glass-right{
+    border-color:#1755a5;
+}
+
+.blue .glass-bridge,
+.blue .glass-arm-left,
+.blue .glass-arm-right{
+    background:#1755a5;
+}
+
+.pink .glass-lens,
+.pink .glass-right{
+    border-color:#c35d78;
+}
+
+.pink .glass-bridge,
+.pink .glass-arm-left,
+.pink .glass-arm-right{
+    background:#c35d78;
+}
+
+
+.product h3{
+    font-size:16px;
+    line-height:1.35;
+    margin-bottom:8px;
+}
+
+.rating{
+    color:#e09c00;
+    font-size:14px;
+    margin-bottom:8px;
+}
+
+.rating span{
+    color:#777;
+}
+
+.price{
+    font-size:21px;
+    font-weight:bold;
+}
+
+.old-price{
+    color:#888;
+    text-decoration:line-through;
+    font-size:13px;
+    margin-left:5px;
+}
+
+.discount{
+    color:#07833c;
+    font-size:13px;
+    font-weight:bold;
+    margin-top:5px;
+}
+
+.delivery{
+    color:#555;
+    font-size:13px;
+    margin:10px 0;
+}
+
+.product-buttons{
+    display:flex;
+    gap:7px;
+}
+
+.cart-btn,
+.buy-btn{
+    flex:1;
+    padding:10px 5px;
+    border-radius:5px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.cart-btn{
+    background:#fff4cc;
+    border:1px solid #d9a400;
+    color:#765600;
+}
+
+.buy-btn{
+    background:#111;
+    border:1px solid #111;
+    color:#fff;
+}
+
+.cart-btn:hover{
+    background:#fbe7a0;
+}
+
+.buy-btn:hover{
+    background:#2d2d2d;
+}
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:3000;
+    background:rgba(0,0,0,.65);
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+}
+
+.modal-content{
+    width:95%;
+    max-width:550px;
+    max-height:92vh;
+    overflow-y:auto;
+    background:#fff;
+    border-radius:12px;
+    padding:25px;
+    position:relative;
+}
+
+.large-modal{
+    max-width:700px;
+}
+
+.close{
+    position:absolute;
+    right:17px;
+    top:10px;
+    font-size:28px;
+    cursor:pointer;
+    color:#555;
+    z-index:5;
+}
+
+.close:hover{
+    color:#b18100;
+}
+.detail-image{
+    height:210px;
+    background:#f7f3e7;
+    border-radius:10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.detail-image .glasses{
+    transform:scale(1.35);
+}
+
+.detail-price{
+    font-size:27px;
+    font-weight:bold;
+    margin:12px 0;
+}
+
+.detail-old{
+    color:#888;
+    text-decoration:line-through;
+    font-size:15px;
+    margin-left:6px;
+}
+
+.quantity-box{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:20px 0;
+}
+
+.quantity-box button{
+    width:34px;
+    height:34px;
+    border:1px solid #bbb;
+    background:#fff;
+    cursor:pointer;
+    border-radius:4px;
+    font-size:18px;
+}
+
+.gold-btn,
+.dark-btn{
+    width:100%;
+    padding:13px;
+    border-radius:6px;
+    border:0;
+    cursor:pointer;
+    font-weight:bold;
+    margin-top:9px;
+}
+
+.gold-btn{
+    background:#d9a400;
+    color:#111;
+}
+
+.dark-btn{
+    background:#111;
+    color:#fff;
+}
+
+.gold-btn:hover{
+    background:#edc026;
+}
+
+.cart-item{
+    display:grid;
+    grid-template-columns:55px 1fr 30px;
+    gap:12px;
+    align-items:start;
+    border-bottom:1px solid #ddd;
+    padding:15px 0;
+}
+
+.cart-icon{
+    width:50px;
+    height:50px;
+    background:#f7f3e7;
+    border-radius:6px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:25px;
+}
+
+.cart-info h4{
+    margin-bottom:5px;
+}
+
+.cart-price{
+    font-weight:bold;
+    color:#111;
+}
+
+.remove-btn{
+    border:0;
+    background:transparent;
+    color:#d00;
+    cursor:pointer;
+    font-size:17px;
+}
+
+.cart-summary{
+    margin-top:18px;
+    padding-top:15px;
+    border-top:2px solid #ddd;
+}
+
+.cart-total{
+    font-size:22px;
+    font-weight:bold;
+}
+.form-group{
+    margin-bottom:14px;
+}
+
+.form-group label{
+    display:block;
+    font-weight:bold;
+    font-size:14px;
+    margin-bottom:6px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    outline:0;
+    font-size:14px;
+}
+
+.form-group textarea{
+    min-height:80px;
+    resize:vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    border-color:#d9a400;
+}
+.account-tabs{
+    display:flex;
+    gap:5px;
+    margin:20px 0;
+    border-bottom:1px solid #ddd;
+}
+
+.account-tabs button{
+    flex:1;
+    padding:12px;
+    border:0;
+    background:#f5f5f5;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.account-tabs button.active{
+    background:#d9a400;
+    color:#111;
+}
+
+.payment-options{
+    display:grid;
+    gap:10px;
+    margin:15px 0;
+}
+
+.payment-option{
+    border:1px solid #ccc;
+    padding:14px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.payment-option:hover{
+    border-color:#d9a400;
+    background:#fffaf0;
+}
+
+.payment-option input{
+    margin-right:8px;
+}
+
+.checkout-items{
+    background:#f7f7f7;
+    padding:12px;
+    border-radius:7px;
+    margin-bottom:20px;
+}
+
+.checkout-row{
+    display:flex;
+    justify-content:space-between;
+    padding:6px 0;
+}
+.order-card{
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:15px;
+    margin-bottom:12px;
+}
+
+.order-card h3{
+    margin-bottom:6px;
+}
+
+.order-status{
+    display:inline-block;
+    margin-top:8px;
+    padding:5px 9px;
+    border-radius:4px;
+    background:#e8f7ed;
+    color:#087a35;
+    font-size:13px;
+    font-weight:bold;
+}
+footer{
+    margin-top:50px;
+    background:#111;
+    color:#fff;
+    padding:45px 5%;
+}
+
+.footer-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:30px;
+}
+
+footer h3{
+    color:#e0ad00;
+    margin-bottom:15px;
+}
+
+footer p{
+    color:#ccc;
+    margin:8px 0;
+    font-size:14px;
+}
+
+.copyright{
+    margin-top:30px;
+    padding-top:20px;
+    border-top:1px solid #333;
+    text-align:center;
+    color:#999;
+}
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    z-index:9999;
+    background:#111;
+    color:#fff;
+    padding:14px 18px;
+    border-radius:7px;
+    box-shadow:0 5px 20px rgba(0,0,0,.3);
+    max-width:320px;
+}
+
+@media(max-width:850px){
+
+    .topbar{
+        flex-wrap:wrap;
+        gap:10px;
+    }
+
+    .logo{
+        width:auto;
+    }
+
+    .search-box{
+        order:3;
+        flex-basis:100%;
+    }
+
+    .header-actions{
+        margin-left:auto;
+        gap:10px;
+    }
+
+    .header-actions button{
+        font-size:12px;
+    }
+
+    .hero{
+        padding:35px 25px;
+    }
+
+    .hero h1{
+        font-size:31px;
+    }
+
+    .hero-glasses{
+        display:none;
+    }
+
+    .features{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .footer-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+
+@media(max-width:550px){
+
+    .topbar{
+        padding:12px 4%;
+    }
+
+    .logo{
+        font-size:24px;
+    }
+
+    .header-actions{
+        gap:7px;
+    }
+
+    .header-actions button{
+        font-size:11px;
+    }
+
+    .categories{
+        padding:12px 4%;
+        gap:20px;
+    }
+
+    .hero{
+        margin:18px 4%;
+        padding:30px 20px;
+    }
+
+    .section{
+        margin:25px 4%;
+    }
+
+    .notice{
+        margin:18px 4%;
+    }
+
+    .products{
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+        gap:10px;
+    }
+
+    .product{
+        padding:10px;
+    }
+
+    .product-img{
+        height:145px;
+    }
+
+    .product h3{
+        font-size:14px;
+    }
+
+    .price{
+        font-size:18px;
+    }
+
+    .product-buttons{
+        flex-direction:column;
+    }
+
+    .features{
+        grid-template-columns:1fr;
+    }
+
+    .footer-grid{
+        grid-template-columns:1fr;
+    }
+
+    .modal-content{
+        padding:20px 15px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="topbar">
+
+        <div class="logo">
+            Vision<span>Cart</span>
+        </div>
+
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search glasses..."
+            >
+
+            <button id="searchButton">
+                🔍
+            </button>
+
+        </div>
+
+
+        <div class="header-actions">
+
+            <button id="ordersButton">
+                📦 Orders
+            </button>
+
+            <button id="accountButton">
+                👤 Account
+            </button>
+
+            <button id="cartButton">
+                🛒 Cart
+                (<span id="cartCount">0</span>)
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+<nav class="categories">
+
+    <button data-category="All">
+        All Glasses
+    </button>
+
+    <button data-category="Men">
+        👨 Men
+    </button>
+
+    <button data-category="Women">
+        👩 Women
+    </button>
+
+    <button data-category="Unisex">
+        👓 Unisex
+    </button>
+
+    <button data-category="Computer">
+        💻 Computer Glasses
+    </button>
+
+    <button data-category="Reading">
+        📖 Reading Glasses
+    </button>
+
+    <button data-category="Sunglasses">
+        🕶️ Sunglasses
+    </button>
+
+</nav>
+<section class="hero">
+
+    <div class="hero-text">
+
+        <h1>
+            See Better. Look Better.
+        </h1>
+
+        <p>
+            Discover stylish glasses for work, reading,
+            computer use and everyday fashion.
+        </p>
+
+        <button id="exploreButton">
+            Explore Glasses
+        </button>
+
+    </div>
+
+
+    <div class="hero-glasses">
+        👓
+    </div>
+
+</section>
+<div class="notice">
+
+    <h3>
+        👓 Important Eyewear Notice
+    </h3>
+
+    <p>
+        Product information is for shopping purposes.
+        If you require prescription lenses, please use
+        your valid prescription and consult an eye-care
+        professional when needed.
+    </p>
+
+</div>
+
+<section class="section">
+
+    <div class="features">
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🚚
+            </div>
+
+            <h3>
+                Fast Delivery
+            </h3>
+
+            <p>
+                Quick doorstep delivery
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🔄
+            </div>
+
+            <h3>
+                Easy Returns
+            </h3>
+
+            <p>
+                Simple return process
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                ⭐
+            </div>
+
+            <h3>
+                Trusted Reviews
+            </h3>
+
+            <p>
+                Customer ratings
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🔐
+            </div>
+
+            <h3>
+                Secure Checkout
+            </h3>
+
+            <p>
+                Safe shopping experience
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section
+    class="section"
+    id="productsSection"
+>
+
+    <div class="section-title">
+
+        <h2 id="resultTitle">
+            Popular Glasses
+        </h2>
+
+        <span id="resultCount"></span>
+
+    </div>
+
+    <div
+        class="products"
+        id="productList"
+    ></div>
+
+</section>
+
+<footer>
+
+    <div class="footer-grid">
+
+        <div>
+
+            <h3>
+                VisionCart
+            </h3>
+
+            <p>
+                About Us
+            </p>
+
+            <p>
+                Careers
+            </p>
+
+            <p>
+                Contact Us
+            </p>
+
+            <p>
+                Our Stores
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Customer Service
+            </h3>
+
+            <p>
+                Track Order
+            </p>
+
+            <p>
+                Returns & Refunds
+            </p>
+
+            <p>
+                Help Center
+            </p>
+
+            <p>
+                Delivery Information
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Eyewear
+            </h3>
+
+            <p>
+                Men's Glasses
+            </p>
+
+            <p>
+                Women's Glasses
+            </p>
+
+            <p>
+                Computer Glasses
+            </p>
+
+            <p>
+                Sunglasses
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Legal
+            </h3>
+
+            <p>
+                Privacy Policy
+            </p>
+
+            <p>
+                Terms & Conditions
+            </p>
+
+            <p>
+                Refund Policy
+            </p>
+
+            <p>
+                Disclaimer
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 VisionCart. All rights reserved.
+    </div>
+
+</footer>
+
+<div
+    class="modal"
+    id="productModal"
+>
+
+    <div class="modal-content">
+
+        <span
+            class="close"
+            data-close="productModal"
+        >
+            ×
+        </span>
+
+        <div id="productDetails"></div>
+
+    </div>
+
+</div>
+
+<div
+    class="modal"
+    id="cartModal"
+>
+
+    <div class="modal-content large-modal">
+
+        <span
+            class="close"
+            data-close="cartModal"
+        >
+            ×
+        </span>
+
+        <h2>
+            🛒 My Cart
+        </h2>
+
+        <div id="cartItems"></div>
+
+        <div class="cart-summary">
+
+            <div class="cart-total">
+                Total:
+                ₹<span id="cartTotal">0</span>
+            </div>
+
+            <button
+                class="gold-btn"
+                id="cartCheckoutButton"
+            >
+                ⚡ Proceed to Buy
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<div
+    class="modal"
+    id="accountModal"
+>
+
+    <div class="modal-content">
+
+        <span
+            class="close"
+            data-close="accountModal"
+        >
+            ×
+        </span>
+
+        <h2>
+            👤 My Account
+        </h2>
+
+
+        <div class="account-tabs">
+
+            <button
+                id="loginTab"
+                class="active"
+            >
+                Login
+            </button>
+
+            <button id="signupTab">
+                New Customer
+            </button>
+
+        </div>
+
+
+        <div id="accountForm"></div>
+
+    </div>
+
+</div>
+<div
+    class="modal"
+    id="checkoutModal"
+>
+
+    <div class="modal-content large-modal">
+
+        <span
+            class="close"
+            data-close="checkoutModal"
+        >
+            ×
+        </span>
+
+        <h2>
+            🧾 Checkout
+        </h2>
+
+        <p style="
+            color:#777;
+            margin:8px 0 20px;
+        ">
+            Enter your delivery details.
+        </p>
+
+
+        <div class="checkout-items">
+
+            <h3>
+                Order Summary
+            </h3>
+
+            <div id="checkoutItems"></div>
+
+            <hr style="margin:10px 0">
+
+            <strong>
+                Total: ₹<span id="checkoutTotal">0</span>
+            </strong>
+
+        </div>
+
+
+        <h3 style="margin-bottom:15px">
+            📍 Delivery Address
+        </h3>
+
+
+        <div class="form-group">
+
+            <label>
+                Full Name *
+            </label>
+
+            <input
+                type="text"
+                id="customerName"
+                placeholder="Enter full name"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Phone Number *
+            </label>
+
+            <input
+                type="tel"
+                id="customerPhone"
+                maxlength="10"
+                placeholder="10 digit phone number"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="customerEmail"
+                placeholder="Enter email"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Full Address *
+            </label>
+
+            <textarea
+                id="customerAddress"
+                placeholder="House number, street, area..."
+            ></textarea>
+
+        </div>
+
+
+        <div
+            style="
+                display:grid;
+                grid-template-columns:
+                    repeat(3,1fr);
+                gap:10px;
+            "
+        >
+
+            <div class="form-group">
+
+                <label>
+                    City *
+                </label>
+
+                <input
+                    type="text"
+                    id="customerCity"
+                    placeholder="City"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    State *
+                </label>
+
+                <input
+                    type="text"
+                    id="customerState"
+                    placeholder="State"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    PIN *
+                </label>
+
+                <input
+                    type="text"
+                    id="customerPin"
+                    maxlength="6"
+                    placeholder="PIN"
+                >
+
+            </div>
+
+        </div>
+
+
+        <h3 style="
+            margin:10px 0;
+        ">
+            💳 Payment Method
+        </h3>
+
+
+        <div class="payment-options">
+
+            <label class="payment-option">
+
+                <input
+                    type="radio"
+                    name="payment"
+                    value="online"
+                    checked
+                >
+
+                💳 Online Payment
+
+                <div style="
+                    color:#777;
+                    font-size:12px;
+                    margin-top:5px;
+                ">
+                    UPI / Card / Net Banking
+                </div>
+
+            </label>
+
+
+            <label class="payment-option">
+
+                <input
+                    type="radio"
+                    name="payment"
+                    value="cod"
+                >
+
+                💵 Cash on Delivery
+
+                <div style="
+                    color:#777;
+                    font-size:12px;
+                    margin-top:5px;
+                ">
+                    Pay when your order arrives
+                </div>
+
+            </label>
+
+        </div>
+
+
+        <button
+            class="gold-btn"
+            id="placeOrderButton"
+        >
+            ✅ Place Order
+        </button>
+
+    </div>
+
+</div>
+<div
+    class="modal"
+    id="ordersModal"
+>
+
+    <div class="modal-content large-modal">
+
+        <span
+            class="close"
+            data-close="ordersModal"
+        >
+            ×
+        </span>
+
+        <h2>
+            📦 My Orders
+        </h2>
+
+        <div
+            id="ordersList"
+            style="margin-top:20px"
+        ></div>
+
+    </div>
+
+</div>
+
+<script>
+
+const products = [
+
+    {
+        id:1,
+        name:"Classic Black Frame Glasses",
+        category:"Men",
+        type:"Eyeglasses",
+        price:799,
+        oldPrice:1299,
+        rating:4.6,
+        reviews:1240,
+        frame:"black"
+    },
+
+    {
+        id:2,
+        name:"Golden Metal Frame Glasses",
+        category:"Unisex",
+        type:"Eyeglasses",
+        price:999,
+        oldPrice:1599,
+        rating:4.7,
+        reviews:980,
+        frame:"gold"
+    },
+
+    {
+        id:3,
+        name:"Blue Light Computer Glasses",
+        category:"Computer",
+        type:"Computer Glasses",
+        price:699,
+        oldPrice:1199,
+        rating:4.5,
+        reviews:2150,
+        frame:"blue"
+    },
+
+    {
+        id:4,
+        name:"Premium Brown Frame",
+        category:"Men",
+        type:"Eyeglasses",
+        price:899,
+        oldPrice:1499,
+        rating:4.4,
+        reviews:750,
+        frame:"brown"
+    },
+
+    {
+        id:5,
+        name:"Rose Gold Women's Glasses",
+        category:"Women",
+        type:"Eyeglasses",
+        price:1099,
+        oldPrice:1799,
+        rating:4.8,
+        reviews:1320,
+        frame:"pink"
+    },
+
+    {
+        id:6,
+        name:"Round Reading Glasses",
+        category:"Reading",
+        type:"Reading Glasses",
+        price:599,
+        oldPrice:899,
+        rating:4.3,
+        reviews:540,
+        frame:"black"
+    },
+
+    {
+        id:7,
+        name:"Premium Black Sunglasses",
+        category:"Sunglasses",
+        type:"Sunglasses",
+        price:1299,
+        oldPrice:1999,
+        rating:4.7,
+        reviews:1820,
+        frame:"black"
+    },
+
+    {
+        id:8,
+        name:"Golden Aviator Sunglasses",
+        category:"Sunglasses",
+        type:"Sunglasses",
+        price:1499,
+        oldPrice:2499,
+        rating:4.8,
+        reviews:2440,
+        frame:"gold"
+    },
+
+    {
+        id:9,
+        name:"Transparent Style Glasses",
+        category:"Women",
+        type:"Eyeglasses",
+        price:849,
+        oldPrice:1399,
+        rating:4.5,
+        reviews:870,
+        frame:"silver"
+    },
+
+    {
+        id:10,
+        name:"Modern Square Frame",
+        category:"Unisex",
+        type:"Eyeglasses",
+        price:749,
+        oldPrice:1199,
+        rating:4.4,
+        reviews:610,
+        frame:"black"
+    },
+
+    {
+        id:11,
+        name:"Anti Glare Computer Glasses",
+        category:"Computer",
+        type:"Computer Glasses",
+        price:899,
+        oldPrice:1499,
+        rating:4.6,
+        reviews:1430,
+        frame:"blue"
+    },
+
+    {
+        id:12,
+        name:"Premium Cat Eye Glasses",
+        category:"Women",
+        type:"Eyeglasses",
+        price:1199,
+        oldPrice:1899,
+        rating:4.7,
+        reviews:930,
+        frame:"brown"
+    },
+
+    {
+        id:13,
+        name:"Silver Office Glasses",
+        category:"Unisex",
+        type:"Eyeglasses",
+        price:949,
+        oldPrice:1499,
+        rating:4.5,
+        reviews:670,
+        frame:"silver"
+    },
+
+    {
+        id:14,
+        name:"Classic Golden Reading Glasses",
+        category:"Reading",
+        type:"Reading Glasses",
+        price:649,
+        oldPrice:999,
+        rating:4.4,
+        reviews:420,
+        frame:"gold"
+    },
+
+    {
+        id:15,
+        name:"Blue Square Computer Frame",
+        category:"Computer",
+        type:"Computer Glasses",
+        price:799,
+        oldPrice:1299,
+        rating:4.6,
+        reviews:810,
+        frame:"blue"
+    },
+
+    {
+        id:16,
+        name:"Brown Vintage Glasses",
+        category:"Men",
+        type:"Eyeglasses",
+        price:849,
+        oldPrice:1399,
+        rating:4.5,
+        reviews:530,
+        frame:"brown"
+    },
+
+    {
+        id:17,
+        name:"Elegant Pink Frame",
+        category:"Women",
+        type:"Eyeglasses",
+        price:899,
+        oldPrice:1499,
+        rating:4.6,
+        reviews:910,
+        frame:"pink"
+    },
+
+    {
+        id:18,
+        name:"Black Wayfarer Glasses",
+        category:"Unisex",
+        type:"Eyeglasses",
+        price:1099,
+        oldPrice:1699,
+        rating:4.7,
+        reviews:1580,
+        frame:"black"
+    },
+
+    {
+        id:19,
+        name:"Golden Round Glasses",
+        category:"Unisex",
+        type:"Eyeglasses",
+        price:949,
+        oldPrice:1599,
+        rating:4.6,
+        reviews:760,
+        frame:"gold"
+    },
+
+    {
+        id:20,
+        name:"Sport Black Sunglasses",
+        category:"Sunglasses",
+        type:"Sunglasses",
+        price:1199,
+        oldPrice:1899,
+        rating:4.5,
+        reviews:1190,
+        frame:"black"
+    },
+
+    {
+        id:21,
+        name:"Premium Silver Sunglasses",
+        category:"Sunglasses",
+        type:"Sunglasses",
+        price:1399,
+        oldPrice:2199,
+        rating:4.7,
+        reviews:980,
+        frame:"silver"
+    },
+
+    {
+        id:22,
+        name:"Comfort Reading Frame",
+        category:"Reading",
+        type:"Reading Glasses",
+        price:549,
+        oldPrice:799,
+        rating:4.2,
+        reviews:380,
+        frame:"brown"
+    },
+
+    {
+        id:23,
+        name:"Premium Blue Light Frame",
+        category:"Computer",
+        type:"Computer Glasses",
+        price:999,
+        oldPrice:1599,
+        rating:4.8,
+        reviews:1710,
+        frame:"blue"
+    },
+
+    {
+        id:24,
+        name:"Luxury Rose Gold Frame",
+        category:"Women",
+        type:"Eyeglasses",
+        price:1299,
+        oldPrice:1999,
+        rating:4.8,
+        reviews:1150,
+        frame:"pink"
+    }
+
+];
+
+let cart =
+    JSON.parse(
+        localStorage.getItem("visionCart")
+    ) || [];
+
+
+let orders =
+    JSON.parse(
+        localStorage.getItem("visionOrders")
+    ) || [];
+
+
+let user =
+    JSON.parse(
+        localStorage.getItem("visionUser")
+    ) || null;
+
+
+let selectedProduct = null;
+
+let selectedQuantity = 1;
+
+function $(id){
+
+    return document.getElementById(id);
+
+}
+
+function saveCart(){
+
+    localStorage.setItem(
+        "visionCart",
+        JSON.stringify(cart)
+    );
+
+    updateCartCount();
+
+}
+
+function updateCartCount(){
+
+    const count =
+        cart.reduce(
+            function(total,item){
+
+                return total + item.quantity;
+
+            },
+            0
+        );
+
+
+    $("cartCount").textContent = count;
+
+}
+
+function glassesHTML(frame){
+
+    return `
+        <div class="glasses ${frame}">
+
+            <div class="glass-arm-left"></div>
+
+            <div class="glass-lens"></div>
+
+            <div class="glass-bridge"></div>
+
+            <div class="glass-right"></div>
+
+            <div class="glass-arm-right"></div>
+
+        </div>
+    `;
+
+}
+
+function displayProducts(list){
+
+    const productList =
+        $("productList");
+
+    if(!productList){
+
+        console.error(
+            "productList element not found."
+        );
+
+        return;
+
+    }
+
+
+    productList.innerHTML = "";
+
+
+    if(list.length === 0){
+
+        productList.innerHTML = `
+
+            <div style="
+                background:white;
+                padding:40px;
+                text-align:center;
+                border-radius:10px;
+                grid-column:1/-1;
+            ">
+
+                <h2>
+                    😕 No glasses found
+                </h2>
+
+                <p style="
+                    margin-top:10px;
+                    color:#777;
+                ">
+                    Try another search.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    list.forEach(function(product){
+
+        const discount =
+            Math.round(
+                (
+                    (
+                        product.oldPrice -
+                        product.price
+                    )
+                    /
+                    product.oldPrice
+                ) * 100
+            );
+
+
+        productList.innerHTML += `
+
+            <div
+                class="product"
+                data-id="${product.id}"
+            >
+
+                <div
+                    class="product-img"
+                    data-view="${product.id}"
+                >
+                    ${glassesHTML(product.frame)}
+                </div>
+
+
+                <h3>
+                    ${product.name}
+                </h3>
+
+
+                <div class="rating">
+
+                    ⭐ ${product.rating}
+
+                    <span>
+                        (${product.reviews})
+                    </span>
+
+                </div>
+
+
+                <div class="price">
+
+                    ₹${product.price}
+
+                    <span class="old-price">
+                        ₹${product.oldPrice}
+                    </span>
+
+                </div>
+
+
+                <div class="discount">
+                    ${discount}% OFF
+                </div>
+
+
+                <div class="delivery">
+                    🚚 Free delivery available
+                </div>
+
+
+                <div class="product-buttons">
+
+                    <button
+                        class="cart-btn"
+                        data-cart="${product.id}"
+                    >
+                        🛒 Add Cart
+                    </button>
+
+
+                    <button
+                        class="buy-btn"
+                        data-buy="${product.id}"
+                    >
+                        ⚡ Buy Now
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+function searchProducts(){
+
+    const query =
+        $("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    if(query === ""){
+
+        $("resultTitle").textContent =
+            "Popular Glasses";
+
+        $("resultCount").textContent = "";
+
+        displayProducts(products);
+
+        return;
+
+    }
+
+
+    const results =
+        products.filter(
+            function(product){
+
+                return (
+
+                    product.name
+                        .toLowerCase()
+                        .includes(query)
+
+                    ||
+
+                    product.category
+                        .toLowerCase()
+                        .includes(query)
+
+                    ||
+
+                    product.type
+                        .toLowerCase()
+                        .includes(query)
+
+                );
+
+            }
+        );
+
+
+    $("resultTitle").textContent =
+        `Search Results for "${query}"`;
+
+
+    $("resultCount").textContent =
+        `${results.length} products`;
+
+
+    displayProducts(results);
+
+}
+
+function filterCategory(category){
+
+    $("searchInput").value = "";
+
+
+    let results;
+
+
+    if(category === "All"){
+
+        results = products;
+
+        $("resultTitle").textContent =
+            "Popular Glasses";
+
+    }
+    else{
+
+        results =
+            products.filter(
+                function(product){
+
+                    return product.category === category;
+
+                }
+            );
+
+
+        $("resultTitle").textContent =
+            `${category} Glasses`;
+
+    }
+
+
+    $("resultCount").textContent =
+        `${results.length} products`;
+
+
+    displayProducts(results);
+
+
+    scrollProducts();
+
+}
+
+function viewProduct(id){
+
+    selectedProduct =
+        products.find(
+            function(product){
+
+                return product.id === id;
+
+            }
+        );
+
+
+    if(!selectedProduct){
+
+        return;
+
+    }
+
+
+    selectedQuantity = 1;
+
+
+    renderProductDetails();
+
+
+    $("productModal").style.display =
+        "flex";
+
+}
+function renderProductDetails(){
+
+    const product =
+        selectedProduct;
+
+
+    const discount =
+        Math.round(
+            (
+                (
+                    product.oldPrice -
+                    product.price
+                )
+                /
+                product.oldPrice
+            ) * 100
+        );
+
+
+    $("productDetails").innerHTML = `
+
+        <div class="detail-image">
+
+            ${glassesHTML(product.frame)}
+
+        </div>
+
+
+        <h2>
+            ${product.name}
+        </h2>
+
+
+        <div
+            class="rating"
+            style="margin-top:10px"
+        >
+
+            ⭐ ${product.rating}
+
+            <span>
+                (${product.reviews} reviews)
+            </span>
+
+        </div>
+
+
+        <div class="detail-price">
+
+            ₹${product.price}
+
+            <span class="detail-old">
+                ₹${product.oldPrice}
+            </span>
+
+        </div>
+
+
+        <p style="
+            color:#07833c;
+            font-weight:bold;
+            margin-bottom:15px;
+        ">
+            ${discount}% OFF
+        </p>
+
+
+        <hr>
+
+
+        <p style="margin:15px 0">
+            <strong>Category:</strong>
+            ${product.category}
+        </p>
+
+
+        <p style="margin:15px 0">
+            <strong>Type:</strong>
+            ${product.type}
+        </p>
+
+
+        <p style="margin:15px 0">
+            <strong>Frame:</strong>
+            ${product.frame}
+        </p>
+
+
+        <p style="margin:15px 0">
+            🚚 Free delivery available
+        </p>
+
+
+        <p style="margin:15px 0">
+            🔄 Easy returns available
+        </p>
+
+
+        <div class="quantity-box">
+
+            <strong>
+                Quantity:
+            </strong>
+
+
+            <button
+                id="detailMinus"
+            >
+                −
+            </button>
+
+
+            <span id="detailQuantity">
+                1
+            </span>
+
+
+            <button
+                id="detailPlus"
+            >
+                +
+            </button>
+
+        </div>
+
+
+        <button
+            class="gold-btn"
+            id="detailCartButton"
+        >
+            🛒 Add to Cart
+        </button>
+
+
+        <button
+            class="dark-btn"
+            id="detailBuyButton"
+        >
+            ⚡ Buy Now
+        </button>
+
+
+        <hr style="
+            margin:25px 0;
+        ">
+
+
+        <h3>
+            Customer Reviews
+        </h3>
+
+
+        <p style="margin-top:12px">
+            ⭐⭐⭐⭐⭐
+            Very comfortable and stylish.
+        </p>
+
+
+        <p style="margin-top:10px">
+            ⭐⭐⭐⭐
+            Good quality frame.
+        </p>
+
+    `;
+
+
+    $("detailMinus").onclick =
+        function(){
+
+            changeDetailQuantity(-1);
+
+        };
+
+
+    $("detailPlus").onclick =
+        function(){
+
+            changeDetailQuantity(1);
+
+        };
+
+
+    $("detailCartButton").onclick =
+        function(){
+
+            addToCart(
+                product.id,
+                selectedQuantity
+            );
+
+            closeModal("productModal");
+
+        };
+
+
+    $("detailBuyButton").onclick =
+        function(){
+
+            buyNow(
+                product.id,
+                selectedQuantity
+            );
+
+        };
+
+}
+
+function changeDetailQuantity(value){
+
+    selectedQuantity += value;
+
+
+    if(selectedQuantity < 1){
+
+        selectedQuantity = 1;
+
+    }
+
+
+    if(selectedQuantity > 10){
+
+        selectedQuantity = 10;
+
+    }
+
+
+    $("detailQuantity").textContent =
+        selectedQuantity;
+
+}
+
+function addToCart(id,quantity){
+
+    const product =
+        products.find(
+            function(item){
+
+                return item.id === id;
+
+            }
+        );
+
+
+    if(!product){
+
+        return;
+
+    }
+
+
+    quantity =
+        Number(quantity) || 1;
+
+
+    const existing =
+        cart.find(
+            function(item){
+
+                return item.id === id;
+
+            }
+        );
+
+
+    if(existing){
+
+        existing.quantity += quantity;
+
+    }
+    else{
+
+        cart.push({
+
+            id:product.id,
+
+            name:product.name,
+
+            category:product.category,
+
+            type:product.type,
+
+            price:product.price,
+
+            oldPrice:product.oldPrice,
+
+            rating:product.rating,
+
+            reviews:product.reviews,
+
+            frame:product.frame,
+
+            quantity:quantity
+
+        });
+
+    }
+
+
+    saveCart();
+
+
+    showToast(
+        `🛒 ${product.name} added to cart`
+    );
+
+}
+
+function showToast(message){
+
+    const oldToast =
+        document.querySelector(".toast");
+
+
+    if(oldToast){
+
+        oldToast.remove();
+
+    }
+
+
+    const toast =
+        document.createElement("div");
+
+
+    toast.className = "toast";
+
+    toast.textContent = message;
+
+
+    document.body.appendChild(toast);
+
+
+    setTimeout(
+        function(){
+
+            toast.remove();
+
+        },
+        2500
+    );
+
+}
+
+function openCart(){
+
+    renderCart();
+
+    $("cartModal").style.display =
+        "flex";
+
+}
+
+function renderCart(){
+
+    const container =
+        $("cartItems");
+
+
+    if(cart.length === 0){
+
+        container.innerHTML = `
+
+            <div style="
+                text-align:center;
+                padding:35px;
+            ">
+
+                <div style="
+                    font-size:60px;
+                ">
+                    🛒
+                </div>
+
+                <h3>
+                    Your cart is empty
+                </h3>
+
+                <p style="
+                    margin-top:8px;
+                    color:#777;
+                ">
+                    Add some glasses to continue.
+                </p>
+
+            </div>
+
+        `;
+
+
+        $("cartTotal").textContent = "0";
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    let total = 0;
+
+
+    cart.forEach(
+        function(item,index){
+
+            const itemTotal =
+                item.price * item.quantity;
+
+
+            total += itemTotal;
+
+
+            container.innerHTML += `
+
+                <div class="cart-item">
+
+                    <div class="cart-icon">
+
+                        ${glassesHTML(item.frame)}
+
+                    </div>
+
+
+                    <div class="cart-info">
+
+                        <h4>
+                            ${item.name}
+                        </h4>
+
+
+                        <p style="
+                            color:#777;
+                            font-size:12px;
+                        ">
+                            ${item.type}
+                        </p>
+
+
+                        <div style="
+                            display:flex;
+                            align-items:center;
+                            gap:10px;
+                            margin-top:9px;
+                        ">
+
+                            <button
+                                class="qty-minus"
+                                data-index="${index}"
+                                style="
+                                    width:30px;
+                                    height:30px;
+                                    border:1px solid #ccc;
+                                    background:#fff;
+                                    cursor:pointer;
+                                "
+                            >
+                                −
+                            </button>
+
+
+                            <strong>
+                                ${item.quantity}
+                            </strong>
+
+
+                            <button
+                                class="qty-plus"
+                                data-index="${index}"
+                                style="
+                                    width:30px;
+                                    height:30px;
+                                    border:1px solid #ccc;
+                                    background:#fff;
+                                    cursor:pointer;
+                                "
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            class="cart-price"
+                            style="
+                                margin-top:8px;
+                            "
+                        >
+                            ₹${itemTotal}
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="remove-btn"
+                        data-remove="${index}"
+                    >
+                        ✕
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    $("cartTotal").textContent =
+        total;
+
+
+    document.querySelectorAll(".qty-minus")
+        .forEach(
+            function(button){
+
+                button.onclick =
+                    function(){
+
+                        changeCartQuantity(
+                            Number(
+                                button.dataset.index
+                            ),
+                            -1
+                        );
+
+                    };
+
+            }
+        );
+
+
+    document.querySelectorAll(".qty-plus")
+        .forEach(
+            function(button){
+
+                button.onclick =
+                    function(){
+
+                        changeCartQuantity(
+                            Number(
+                                button.dataset.index
+                            ),
+                            1
+                        );
+
+                    };
+
+            }
+        );
+
+
+    document.querySelectorAll(".remove-btn")
+        .forEach(
+            function(button){
+
+                button.onclick =
+                    function(){
+
+                        removeFromCart(
+                            Number(
+                                button.dataset.remove
+                            )
+                        );
+
+                    };
+
+            }
+        );
+
+}
+
+function changeCartQuantity(index,value){
+
+    if(!cart[index]){
+
+        return;
+
+    }
+
+
+    cart[index].quantity += value;
+
+
+    if(cart[index].quantity <= 0){
+
+        cart.splice(index,1);
+
+    }
+
+
+    if(
+        cart[index] &&
+        cart[index].quantity > 10
+    ){
+
+        cart[index].quantity = 10;
+
+    }
+
+
+    saveCart();
+
+    renderCart();
+
+}
+
+function removeFromCart(index){
+
+    if(!cart[index]){
+
+        return;
+
+    }
+
+
+    cart.splice(index,1);
+
+    saveCart();
+
+    renderCart();
+
+}
+
+function buyNow(id,quantity){
+
+    const product =
+        products.find(
+            function(item){
+
+                return item.id === id;
+
+            }
+        );
+
+
+    if(!product){
+
+        return;
+
+    }
+
+
+    quantity =
+        Number(quantity) || 1;
+
+
+    cart = [
+
+        {
+
+            id:product.id,
+
+            name:product.name,
+
+            category:product.category,
+
+            type:product.type,
+
+            price:product.price,
+
+            oldPrice:product.oldPrice,
+
+            rating:product.rating,
+
+            reviews:product.reviews,
+
+            frame:product.frame,
+
+            quantity:quantity
+
+        }
+
+    ];
+
+
+    saveCart();
+
+
+    closeModal("productModal");
+
+
+    openCheckout();
+
+}
+
+function openCheckout(){
+
+    if(cart.length === 0){
+
+        showToast(
+            "🛒 Your cart is empty"
+        );
+
+        return;
+
+    }
+
+
+    renderCheckout();
+
+
+    if(user){
+
+        $("customerName").value =
+            user.name || "";
+
+        $("customerPhone").value =
+            user.phone || "";
+
+        $("customerEmail").value =
+            user.email || "";
+
+    }
+
+
+    $("checkoutModal").style.display =
+        "flex";
+
+}
+
+function renderCheckout(){
+
+    const container =
+        $("checkoutItems");
+
+
+    container.innerHTML = "";
+
+
+    let total = 0;
+
+
+    cart.forEach(
+        function(item){
+
+            const itemTotal =
+                item.price * item.quantity;
+
+
+            total += itemTotal;
+
+
+            container.innerHTML += `
+
+                <div class="checkout-row">
+
+                    <span>
+                        ${item.name}
+                        × ${item.quantity}
+                    </span>
+
+                    <strong>
+                        ₹${itemTotal}
+                    </strong>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    $("checkoutTotal").textContent =
+        total;
+
+}
+
+function placeOrder(){
+
+    const name =
+        $("customerName")
+        .value
+        .trim();
+
+
+    const phone =
+        $("customerPhone")
+        .value
+        .trim();
+
+
+    const email =
+        $("customerEmail")
+        .value
+        .trim();
+
+
+    const address =
+        $("customerAddress")
+        .value
+        .trim();
+
+
+    const city =
+        $("customerCity")
+        .value
+        .trim();
+
+
+    const state =
+        $("customerState")
+        .value
+        .trim();
+
+
+    const pin =
+        $("customerPin")
+        .value
+        .trim();
+
+
+    const paymentElement =
+        document.querySelector(
+            'input[name="payment"]:checked'
+        );
+
+
+    if(!paymentElement){
+
+        showToast(
+            "Please select payment method."
+        );
+
+        return;
+
+    }
+
+
+    const payment =
+        paymentElement.value;
+
+
+    if(
+        !name ||
+        !phone ||
+        !address ||
+        !city ||
+        !state ||
+        !pin
+    ){
+
+        alert(
+            "Please fill all required fields."
+        );
+
+        return;
+
+    }
+
+
+    if(!/^[0-9]{10}$/.test(phone)){
+
+        alert(
+            "Please enter a valid 10 digit phone number."
+        );
+
+        return;
+
+    }
+
+
+    if(!/^[0-9]{6}$/.test(pin)){
+
+        alert(
+            "Please enter a valid 6 digit PIN."
+        );
+
+        return;
+
+    }
+
+
+    let total = 0;
+
+
+    cart.forEach(
+        function(item){
+
+            total +=
+                item.price *
+                item.quantity;
+
+        }
+    );
+
+
+    const order = {
+
+        id:
+            "VC" +
+            Date.now(),
+
+        date:
+            new Date()
+            .toLocaleString(),
+
+        customer:{
+
+            name:name,
+
+            phone:phone,
+
+            email:email,
+
+            address:address,
+
+            city:city,
+
+            state:state,
+
+            pin:pin
+
+        },
+
+        payment:
+            payment === "online"
+            ? "Online Payment"
+            : "Cash on Delivery",
+
+        status:
+            payment === "online"
+            ? "Payment Pending"
+            : "Order Confirmed",
+
+        items:
+            JSON.parse(
+                JSON.stringify(cart)
+            ),
+
+        total:total
+
+    };
+
+
+    orders.unshift(order);
+
+
+    localStorage.setItem(
+        "visionOrders",
+        JSON.stringify(orders)
+    );
+
+    if(payment === "online"){
+
+        alert(
+            "Online Payment selected.\n\n" +
+            "Payment gateway demo.\n" +
+            "Real UPI/Card payment gateway can " +
+            "be connected here."
+        );
+
+    }
+    else{
+
+        alert(
+            "Cash on Delivery selected."
+        );
+
+    }
+
+
+    cart = [];
+
+
+    saveCart();
+
+
+    closeModal("checkoutModal");
+
+
+    showOrderSuccess(order);
+
+}
+
+function showOrderSuccess(order){
+
+    $("ordersList").innerHTML = `
+
+        <div style="
+            text-align:center;
+            padding:25px 10px;
+        ">
+
+            <div style="
+                font-size:60px;
+            ">
+                ✅
+            </div>
+
+            <h2>
+                Order Placed Successfully!
+            </h2>
+
+
+            <p style="
+                margin:15px 0;
+            ">
+                Order ID:
+                <strong>
+                    ${order.id}
+                </strong>
+            </p>
+
+
+            <p>
+                Total:
+                <strong>
+                    ₹${order.total}
+                </strong>
+            </p>
+
+
+            <p style="
+                margin-top:8px;
+            ">
+                ${order.payment}
+            </p>
+
+
+            <button
+                class="gold-btn"
+                id="successCloseButton"
+            >
+                Continue Shopping
+            </button>
+
+        </div>
+
+    `;
+
+
+    $("successCloseButton").onclick =
+        function(){
+
+            closeModal("ordersModal");
+
+        };
+
+
+    $("ordersModal").style.display =
+        "flex";
+
+}
+
+function openAccount(){
+
+    $("accountModal").style.display =
+        "flex";
+
+
+    if(user){
+
+        showLoggedIn();
+
+    }
+    else{
+
+        showLogin();
+
+    }
+
+}
+
+function showLogin(){
+
+    $("loginTab")
+        .classList.add("active");
+
+    $("signupTab")
+        .classList.remove("active");
+
+
+    $("accountForm").innerHTML = `
+
+        <div class="form-group">
+
+            <label>
+                Email / Mobile Number
+            </label>
+
+            <input
+                type="text"
+                id="loginEmail"
+                placeholder="Enter email or mobile"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter password"
+            >
+
+        </div>
+
+
+        <button
+            class="gold-btn"
+            id="loginSubmit"
+        >
+            Login
+        </button>
+
+
+        <p style="
+            text-align:center;
+            margin-top:15px;
+            color:#777;
+        ">
+
+            New customer?
+
+            <button
+                id="createAccountLink"
+                style="
+                    border:0;
+                    background:transparent;
+                    color:#b18100;
+                    font-weight:bold;
+                    cursor:pointer;
+                "
+            >
+                Create Account
+            </button>
+
+        </p>
+
+    `;
+
+
+    $("loginSubmit").onclick =
+        loginUser;
+
+
+    $("createAccountLink").onclick =
+        showSignup;
+
+}
+
+function showSignup(){
+
+    $("loginTab")
+        .classList.remove("active");
+
+    $("signupTab")
+        .classList.add("active");
+
+
+    $("accountForm").innerHTML = `
+
+        <div class="form-group">
+
+            <label>
+                Full Name *
+            </label>
+
+            <input
+                type="text"
+                id="signupName"
+                placeholder="Enter full name"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Mobile Number *
+            </label>
+
+            <input
+                type="tel"
+                id="signupPhone"
+                maxlength="10"
+                placeholder="10 digit mobile number"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="signupEmail"
+                placeholder="Enter email"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Password *
+            </label>
+
+            <input
+                type="password"
+                id="signupPassword"
+                placeholder="Create password"
+            >
+
+        </div>
+
+
+        <button
+            class="gold-btn"
+            id="signupSubmit"
+        >
+            🆕 Create New Account
+        </button>
+
+    `;
+
+
+    $("signupSubmit").onclick =
+        signupUser;
+
+}
+function signupUser(){
+
+    const name =
+        $("signupName")
+        .value
+        .trim();
+
+
+    const phone =
+        $("signupPhone")
+        .value
+        .trim();
+
+
+    const email =
+        $("signupEmail")
+        .value
+        .trim();
+
+
+    const password =
+        $("signupPassword")
+        .value;
+
+
+    if(!name || !phone || !password){
+
+        alert(
+            "Please fill all required fields."
+        );
+
+        return;
+
+    }
+
+
+    if(!/^[0-9]{10}$/.test(phone)){
+
+        alert(
+            "Please enter a valid 10 digit mobile number."
+        );
+
+        return;
+
+    }
+
+
+    user = {
+
+        name:name,
+
+        phone:phone,
+
+        email:email,
+
+        password:password
+
+    };
+
+
+    localStorage.setItem(
+        "visionUser",
+        JSON.stringify(user)
+    );
+
+
+    alert(
+        "Account created successfully!"
+    );
+
+
+    showLoggedIn();
+
+}
+
+function loginUser(){
+
+    const login =
+        $("loginEmail")
+        .value
+        .trim();
+
+
+    const password =
+        $("loginPassword")
+        .value;
+
+
+    const savedUser =
+        JSON.parse(
+            localStorage.getItem("visionUser")
+        );
+
+
+    if(!savedUser){
+
+        alert(
+            "No account found. Please create an account first."
+        );
+
+        showSignup();
+
+        return;
+
+    }
+
+
+    if(
+        (
+            savedUser.email === login ||
+            savedUser.phone === login
+        )
+        &&
+        savedUser.password === password
+    ){
+
+        user = savedUser;
+
+
+        alert(
+            "Login successful!"
+        );
+
+
+        showLoggedIn();
+
+    }
+    else{
+
+        alert(
+            "Invalid email/mobile or password."
+        );
+
+    }
+
+}
+
+function showLoggedIn(){
+
+    $("loginTab")
+        .classList.remove("active");
+
+    $("signupTab")
+        .classList.remove("active");
+
+
+    $("accountForm").innerHTML = `
+
+        <div style="
+            text-align:center;
+            padding:20px 5px;
+        ">
+
+            <div style="
+                font-size:60px;
+            ">
+                👤
+            </div>
+
+
+            <h2>
+                Welcome, ${user.name}
+            </h2>
+
+
+            <p style="
+                color:#777;
+                margin-top:8px;
+            ">
+                ${user.phone}
+            </p>
+
+
+            <p style="
+                color:#777;
+                margin-top:4px;
+            ">
+                ${user.email || ""}
+            </p>
+
+
+            <button
+                class="gold-btn"
+                id="accountOrdersButton"
+            >
+                📦 My Orders
+            </button>
+
+
+            <button
+                class="dark-btn"
+                id="logoutButton"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    `;
+
+
+    $("accountOrdersButton").onclick =
+        function(){
+
+            closeModal("accountModal");
+
+            openOrders();
+
+        };
+
+
+    $("logoutButton").onclick =
+        logoutUser;
+
+}
+
+function logoutUser(){
+
+    localStorage.removeItem(
+        "visionUser"
+    );
+
+
+    user = null;
+
+
+    alert(
+        "Logged out successfully."
+    );
+
+
+    closeModal("accountModal");
+
+}
+
+function openOrders(){
+
+    renderOrders();
+
+
+    $("ordersModal").style.display =
+        "flex";
+
+}
+
+
+function renderOrders(){
+
+    const container =
+        $("ordersList");
+
+
+    if(orders.length === 0){
+
+        container.innerHTML = `
+
+            <div style="
+                text-align:center;
+                padding:35px;
+            ">
+
+                <div style="
+                    font-size:55px;
+                ">
+                    📦
+                </div>
+
+                <h3>
+                    No orders yet
+                </h3>
+
+                <p style="
+                    color:#777;
+                    margin-top:8px;
+                ">
+                    Your orders will appear here.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    orders.forEach(
+        function(order){
+
+            let itemText = "";
+
+
+            order.items.forEach(
+                function(item){
+
+                    itemText += `
+
+                        <div style="
+                            margin-top:5px;
+                        ">
+                            ${item.name}
+                            × ${item.quantity}
+                        </div>
+
+                    `;
+
+                }
+            );
+
+
+            container.innerHTML += `
+
+                <div class="order-card">
+
+                    <h3>
+                        Order #${order.id}
+                    </h3>
+
+
+                    <p style="
+                        color:#777;
+                        font-size:13px;
+                    ">
+                        ${order.date}
+                    </p>
+
+
+                    <hr style="
+                        margin:12px 0;
+                    ">
+
+
+                    ${itemText}
+
+
+                    <p style="
+                        margin-top:12px;
+                    ">
+                        <strong>
+                            Total: ₹${order.total}
+                        </strong>
+                    </p>
+
+
+                    <p style="
+                        margin-top:7px;
+                    ">
+                        Payment:
+                        ${order.payment}
+                    </p>
+
+
+                    <span class="order-status">
+                        ${order.status}
+                    </span>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+}
+
+function closeModal(id){
+
+    const modal =
+        $(id);
+
+
+    if(modal){
+
+        modal.style.display =
+            "none";
+
+    }
+
+}
+
+function scrollProducts(){
+
+    $("productsSection")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
+}
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        displayProducts(products);
+
+        updateCartCount();
+
+        $("searchButton").onclick =
+            searchProducts;
+
+
+        $("searchInput").addEventListener(
+            "input",
+            searchProducts
+        );
+
+        document
+            .querySelectorAll(
+                ".categories button"
+            )
+            .forEach(
+                function(button){
+
+                    button.onclick =
+                        function(){
+
+                            filterCategory(
+                                button.dataset.category
+                            );
+
+                        };
+
+                }
+            );
+
+
+        $("cartButton").onclick =
+            openCart;
+
+
+        $("cartCheckoutButton").onclick =
+            function(){
+
+                if(cart.length === 0){
+
+                    alert(
+                        "Your cart is empty."
+                    );
+
+                    return;
+
+                }
+
+
+                closeModal("cartModal");
+
+                openCheckout();
+
+            };
+
+
+        $("accountButton").onclick =
+            openAccount;
+
+
+        $("loginTab").onclick =
+            showLogin;
+
+
+        $("signupTab").onclick =
+            showSignup;
+
+
+        $("ordersButton").onclick =
+            openOrders;
+
+
+
+        $("exploreButton").onclick =
+            scrollProducts;
+
+
+        $("placeOrderButton").onclick =
+            placeOrder;
+
+
+        $("productList").addEventListener(
+            "click",
+            function(event){
+
+                const cartButton =
+                    event.target.closest(
+                        "[data-cart]"
+                    );
+
+
+                const buyButton =
+                    event.target.closest(
+                        "[data-buy]"
+                    );
+
+
+                const viewArea =
+                    event.target.closest(
+                        "[data-view]"
+                    );
+
+
+                const productCard =
+                    event.target.closest(
+                        ".product"
+                    );
+
+
+                if(cartButton){
+
+                    const id =
+                        Number(
+                            cartButton.dataset.cart
+                        );
+
+
+                    addToCart(id,1);
+
+                    return;
+
+                }
+
+
+                if(buyButton){
+
+                    const id =
+                        Number(
+                            buyButton.dataset.buy
+                        );
+
+
+                    buyNow(id,1);
+
+                    return;
+
+                }
+
+
+                if(viewArea || productCard){
+
+                    let id;
+
+
+                    if(viewArea){
+
+                        id =
+                            Number(
+                                viewArea.dataset.view
+                            );
+
+                    }
+                    else{
+
+                        id =
+                            Number(
+                                productCard.dataset.id
+                            );
+
+                    }
+
+
+                    viewProduct(id);
+
+                }
+
+            }
+        );
+
+        document
+            .querySelectorAll(
+                "[data-close]"
+            )
+            .forEach(
+                function(button){
+
+                    button.onclick =
+                        function(){
+
+                            closeModal(
+                                button.dataset.close
+                            );
+
+                        };
+
+                }
+            );
+
+        document.addEventListener(
+            "click",
+            function(event){
+
+                if(
+                    event.target.classList
+                        .contains("modal")
+                ){
+
+                    event.target.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>
